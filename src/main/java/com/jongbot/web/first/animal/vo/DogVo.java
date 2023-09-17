@@ -3,13 +3,14 @@ package com.jongbot.web.first.animal.vo;
 import java.time.LocalDate;
 import java.util.List;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
-@Getter
-@Setter
+
+@Data
 public class DogVo extends Animal{
 	
 	private int dogId;
