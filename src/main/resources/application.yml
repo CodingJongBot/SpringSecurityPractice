@@ -1,0 +1,14 @@
+
+spring:
+  security:
+    user:
+      name: test
+      password: test
+      roles: USER, ADMIN
+
+server:
+  port: 8080
+
+logging:
+  level:
+    root: debug
