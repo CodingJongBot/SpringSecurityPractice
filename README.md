@@ -10,7 +10,8 @@ __Self Study about Spring Security__
 
 - Todo
 1) DB: H2 or MySql
-2) JDBC : Mybatis or JPA (Work Environment is Mybatis)
+2) JDBC: Mybatis or JPA (Work Environment is Mybatis)
+3) View : Thymeleaf
 ```
 
 
