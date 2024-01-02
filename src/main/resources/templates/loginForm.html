@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang = "en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+	<head>
+	    <meta charset="UTF-8">
+			<title>Jong's Home</title>
+	    <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+	    <link rel="stylesheet" th:href="@{/css/login.css}">
+	</head>
+	
+	<body>
+        <form class="form-signin" method="post" th:action="@{/login}">
+           	<h1 class="h3 mb-3 font-weight-normal"> 로그인 </h1>		   
+			<label for="username" class="sr-only"> LoginID</label>
+        	<input type="text" 
+        			id="username" 
+     				name="username"
+     				class="form-control"
+     				placeholder="아이디를 입력해 주세요" 
+     				required autufocus>
+
+	
+	        <label for="password" class="sr-only">Password</label>
+            <input type="password"
+                   id="password"
+                   name="password"
+                   class="form-control"
+                   placeholder="비밀번호를 입력해 주세요"
+                   required>
+                   
+        	<button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+			<div class="error-message" th:if="${loginError}">
+                <span> 아이디나 패스워드가 올바르지 않습니다. </span>
+            </div>
+    	</form>
+   	<script th:src="@{/js/bootstrap.js}" />
+	</body>	
+</html>

@@ -1,11 +1,10 @@
 
 spring:
-  security:
-    user:
-      name: test
-      password: test
-      roles: USER, ADMIN
-
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false
+      
 server:
   port: 8080
 
