@@ -16,47 +16,56 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter;
 
+import com.jongbot.web.first.auth.security.projectadmin.ProjectAdminManager;
+import com.jongbot.web.first.auth.security.projectuser.ProjectUserManager;
+
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableWebSecurity(debug = true)
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
+		
+	private final ProjectUserManager userManager;
+	private final ProjectAdminManager adminManager;
 	
-//	private BCryptPasswordEncoder passwordEncoder;
-//		
-//	@Autowired
-//	public SecurityConfig(BCryptPasswordEncoder passwordEncoder) {
-//		this.passwordEncoder = passwordEncoder;
-//	}
-
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication()
-				.withUser(User.withUsername("User1").password(passwordEncoder().encode("1111")).roles("USER").build())
-				.withUser(User.withUsername("Admin").password(passwordEncoder().encode("2222")).roles("ADMIN").build());
+	public SecurityConfig(ProjectUserManager userManager,ProjectAdminManager adminManager) {
+		this.userManager = userManager;
+		this.adminManager = adminManager;
 	}
-
+	
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
 	}
 
 	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//		auth.inMemoryAuthentication()
+//				.withUser(User.withUsername("User1").password(passwordEncoder().encode("1111")).roles("USER").build())
+		auth.authenticationProvider(userManager);
+		auth.authenticationProvider(adminManager);
+	}
+
+
+	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		CustomLoginFilter filter = new CustomLoginFilter(authenticationManager());
+		
 		http
 			.headers().disable()
 			.csrf().disable()
 			.authorizeRequests()
 			.antMatchers("/", "/login").permitAll()
-			.antMatchers("/teacher/*").hasRole("ADMIN")
+			.antMatchers("/user/*").hasRole("USER")
+			.antMatchers("/admin/*").hasRole("ADMIN")
 				.anyRequest().authenticated()
 		.and()
 			.formLogin()
 				.loginPage("/login")
 				.permitAll()
-				.defaultSuccessUrl("/", false)//			.defaultSuccessUrl("/user/loginSuccess",false)
+				.defaultSuccessUrl("/", false)
 				.failureUrl("/login-error")
 		.and()
+			.addFilterAt(filter, UsernamePasswordAuthenticationFilter.class)
 			.logout()
 				.logoutSuccessUrl("/")
 		.and()

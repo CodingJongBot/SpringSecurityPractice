@@ -26,7 +26,10 @@
                    class="form-control"
                    placeholder="비밀번호를 입력해 주세요"
                    required>
-                   
+			<div class="type-select">
+				<input type="radio" name="type" value="user" checked> user
+				<input type="radio" name="type" value="admin"> admin
+			</div>                   
         	<button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
 			<div class="error-message" th:if="${loginError}">
                 <span> 아이디나 패스워드가 올바르지 않습니다. </span>
