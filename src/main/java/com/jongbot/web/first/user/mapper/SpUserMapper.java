@@ -1,8 +1,10 @@
 package com.jongbot.web.first.user.mapper;
 
+import org.apache.ibatis.annotations.Mapper;
+
 import com.jongbot.web.first.user.domain.SpUser;
 
-//@Mapper
+@Mapper
 public interface SpUserMapper {
 	
 	public SpUser findUserByEmail(String email);

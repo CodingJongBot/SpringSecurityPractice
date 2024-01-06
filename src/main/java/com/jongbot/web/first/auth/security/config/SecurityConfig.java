@@ -27,42 +27,34 @@ import com.jongbot.web.first.user.service.SpUserService;
 @EnableWebSecurity(debug = true)
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-		
-	private final ProjectUserManager userManager;
-	private final ProjectAdminManager adminManager;
 	private final SpUserService spUserService;
 	
-	public SecurityConfig(ProjectUserManager userManager,ProjectAdminManager adminManager,SpUserService spUserService) {
-		this.userManager = userManager;
-		this.adminManager = adminManager;
+	
+	public SecurityConfig(SpUserService spUserService) {
 		this.spUserService=spUserService;
 	}
 	
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-		web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+		web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations(),PathRequest.toH2Console());
+		
 	}
 
 	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//		auth.inMemoryAuthentication()
-//				.withUser(User.withUsername("User1").password(passwordEncoder().encode("1111")).roles("USER").build())		
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {		
 		auth.userDetailsService(spUserService);
-		auth.authenticationProvider(userManager);
-		auth.authenticationProvider(adminManager);
 	}
 
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		CustomLoginFilter filter = new CustomLoginFilter(authenticationManager());
 		
 		http
 //			.headers().disable()
 //			.csrf().disable()
 			.authorizeRequests()
 			.antMatchers("/", "/login").permitAll()
-			.antMatchers("/user/*").hasRole("USER")
+//			.antMatchers("/user/*").hasRole("USER")
 			.antMatchers("/admin/*").hasRole("ADMIN")
 				.anyRequest().authenticated()
 		.and()
@@ -71,7 +63,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.defaultSuccessUrl("/", false)
 				.failureUrl("/login-error")
 		.and()
-//			.addFilterAt(filter, UsernamePasswordAuthenticationFilter.class)
 			.logout()
 				.logoutSuccessUrl("/")
 		.and()
