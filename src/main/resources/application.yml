@@ -5,12 +5,13 @@ spring:
     prefix: classpath:/templates/
     suffix: .html
     cache: false
-    
+  
+  #    org.h2.Driver  
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:testdb
-    username: sa
-    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver 
+    url: jdbc:mysql://127.0.0.1:3306/projectOasis?&serverTimezone=UTC&autoReconnect=true&allowMultiQueries=true&characterEncoding=UTF-8
+    username: oasis
+    password: admin
         
   h2:
     console:

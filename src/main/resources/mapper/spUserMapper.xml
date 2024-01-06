@@ -4,22 +4,37 @@
 
 <mapper namespace="com.jongbot.web.first.user.mapper">
     <!-- SELECT 쿼리 예시 -->
-    <select id="selectById" parameterType="int" resultType="YourResultType">
-        SELECT * FROM your_table WHERE id = #{id}
+
+
+    <select id="findUserByEmail" parameterType="String" resultType="com.jongbot.web.first.user.domain.SpUser">
+        SELECT * 
+        FROM user 
+        WHERE email = #{email}
     </select>
 
     <!-- INSERT 쿼리 예시 -->
-    <insert id="insertUser" parameterType="YourUserType">
+<!--    <insert id="insertUser" parameterType="YourUserType">
         INSERT INTO your_table (column1, column2, ...) VALUES (#{property1}, #{property2}, ...)
-    </insert>
+    </insert>-->
 
     <!-- UPDATE 쿼리 예시 -->
-    <update id="updateUser" parameterType="YourUserType">
-        UPDATE your_table SET column1 = #{property1}, column2 = #{property2}, ... WHERE id = #{id}
+    <update id="save" parameterType="com.jongbot.web.first.user.mapper.SpUserMapper">
+        UPDATE user  
+        SET email = #{user.email}        
+        SET password = #{user.password}                  
+        SET nickname = #{user.nickname}                    
+        SET tel_number = #{user.tel_number}      
+        SET address =#{user.address}               
+        SET address_detail = #{user.address_detail}          
+        SET profile_image = #{user.profile_image}  
+        SET oauth_naver = #{user.oauth_naver}    
+        SET oauth_kakao = #{user.oauth_kakao}     
+        SET oauth_google = #{user.oauth_google}    
+        WHERE email = #{user.email}
     </update>
 
     <!-- DELETE 쿼리 예시 -->
-    <delete id="deleteById" parameterType="int">
+<!--    <delete id="deleteById" parameterType="int">
         DELETE FROM your_table WHERE id = #{id}
-    </delete>
+    </delete>-->
 </mapper>
