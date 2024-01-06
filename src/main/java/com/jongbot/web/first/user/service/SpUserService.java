@@ -13,7 +13,7 @@ import com.jongbot.web.first.user.domain.SpUserAuthority;
 import com.jongbot.web.first.user.mapper.SpUserMapper;
 
 @Service
-//@Transactional
+//@Transactional //TODO add Dependency Mybatis or JPA 
 public class SpUserService implements UserDetailsService{
 
 	
@@ -27,15 +27,19 @@ public class SpUserService implements UserDetailsService{
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {		
 		return spUserMapper.findUserByEmail(username);
-	}
-	
+	}	
 	
 	public UserDetails findUser(String email) {		
 		return spUserMapper.findUserByEmail(email);
 	}
 	
-	public void save(SpUser user) {
+	public void saveUser(SpUser user) {
 		spUserMapper.save(user);
+	}
+	
+	//TODO DeleteUser
+	public void deleteUser(SpUser user) {
+//		spUserMapper.delete(user);
 	}
 	
 	public void addAuthority(String email, String authority) {
@@ -46,15 +50,14 @@ public class SpUserService implements UserDetailsService{
 			HashSet<SpUserAuthority> authorities = new HashSet<SpUserAuthority>();
 			authorities.add(newRole);			
 			user.setAuthorities(authorities);
-			save(user);
-			
+			saveUser(user);			
 		}
 		else if(!user.getAuthorities().contains(newRole)){
 			HashSet<SpUserAuthority> authorities = new HashSet<SpUserAuthority>();
 			authorities.addAll(user.getAuthorities());
 			authorities.add(newRole);			
 			user.setAuthorities(authorities);
-			save(user);
+			saveUser(user);
 		}	
 	}
 	
@@ -70,7 +73,7 @@ public class SpUserService implements UserDetailsService{
 			authorities.addAll(user.getAuthorities());
 			authorities.remove(removeRole);			
 			user.setAuthorities(authorities);
-			save(user);
+			saveUser(user);
 		}		
 	}
 	
