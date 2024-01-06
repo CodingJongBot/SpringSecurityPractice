@@ -47,11 +47,5 @@ public class MobileSecurityConfig extends WebSecurityConfigurerAdapter{
 		.and()
 			.httpBasic();
 	}
-
-	@Bean
-	BCryptPasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-
 	
 }

@@ -19,6 +19,7 @@ import org.springframework.security.web.authentication.ui.DefaultLoginPageGenera
 
 import com.jongbot.web.first.auth.security.projectadmin.ProjectAdminManager;
 import com.jongbot.web.first.auth.security.projectuser.ProjectUserManager;
+import com.jongbot.web.first.user.service.SpUserService;
 
 
 @Order(0)
@@ -29,10 +30,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		
 	private final ProjectUserManager userManager;
 	private final ProjectAdminManager adminManager;
+	private final SpUserService spUserService;
 	
-	public SecurityConfig(ProjectUserManager userManager,ProjectAdminManager adminManager) {
+	public SecurityConfig(ProjectUserManager userManager,ProjectAdminManager adminManager,SpUserService spUserService) {
 		this.userManager = userManager;
 		this.adminManager = adminManager;
+		this.spUserService=spUserService;
 	}
 	
 	@Override
@@ -43,7 +46,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 //		auth.inMemoryAuthentication()
-//				.withUser(User.withUsername("User1").password(passwordEncoder().encode("1111")).roles("USER").build())
+//				.withUser(User.withUsername("User1").password(passwordEncoder().encode("1111")).roles("USER").build())		
+		auth.userDetailsService(spUserService);
 		auth.authenticationProvider(userManager);
 		auth.authenticationProvider(adminManager);
 	}
@@ -67,7 +71,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.defaultSuccessUrl("/", false)
 				.failureUrl("/login-error")
 		.and()
-			.addFilterAt(filter, UsernamePasswordAuthenticationFilter.class)
+//			.addFilterAt(filter, UsernamePasswordAuthenticationFilter.class)
 			.logout()
 				.logoutSuccessUrl("/")
 		.and()
